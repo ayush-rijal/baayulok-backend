@@ -1,0 +1,11 @@
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\bin\Debug\net10.0\BaayuLok.Application.deps.json
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\bin\Debug\net10.0\BaayuLok.Application.dll
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\bin\Debug\net10.0\BaayuLok.Application.pdb
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\BaayuLok.Application.GeneratedMSBuildEditorConfig.editorconfig
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\BaayuLok.Application.AssemblyInfoInputs.cache
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\BaayuLok.Application.AssemblyInfo.cs
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\BaayuLok.Application.csproj.CoreCompileInputs.cache
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\BaayuLok.Application.dll
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\refint\BaayuLok.Application.dll
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\BaayuLok.Application.pdb
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\ref\BaayuLok.Application.dll

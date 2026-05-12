@@ -7,17 +7,51 @@ public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-    // These represent our tables in PostgreSQL
+    // Auth tables
     public DbSet<User> Users { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+
+    // Patient/case tables
+    public DbSet<Patient> Patients { get; set; }
+    public DbSet<Department> Departments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
-        // Enforce unique emails at the database level so we never get duplicates
+
+        // User email must be unique
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
             .IsUnique();
+
+        // Department name should be unique, e.g. Cardiology, Oncology, Emergency
+        modelBuilder.Entity<Department>()
+            .HasIndex(d => d.Name)
+            .IsUnique();
+
+        // Patient -> Department relationship
+        // One department can have many patients.
+        modelBuilder.Entity<Patient>()
+            .HasOne(p => p.Department)
+            .WithMany()
+            .HasForeignKey(p => p.DepartmentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Patient -> CreatedByOfficer relationship
+        // One officer/user can create many patient cases.
+        modelBuilder.Entity<Patient>()
+            .HasOne(p => p.CreatedByOfficer)
+            .WithMany()
+            .HasForeignKey(p => p.CreatedByOfficerId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Money columns should use proper decimal precision in PostgreSQL
+        modelBuilder.Entity<Patient>()
+            .Property(p => p.CostTotal)
+            .HasPrecision(18, 2);
+
+        modelBuilder.Entity<Patient>()
+            .Property(p => p.CostRaised)
+            .HasPrecision(18, 2);
     }
 }

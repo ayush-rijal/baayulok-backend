@@ -9,3 +9,8 @@ Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\Baay
 Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\refint\BaayuLok.Application.dll
 Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\BaayuLok.Application.pdb
 Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\ref\BaayuLok.Application.dll
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\BaayuLok.Application.sourcelink.json
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\BaayuLok.Application.csproj.AssemblyReference.cache
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\bin\Debug\net10.0\BaayuLok.Domain.dll
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\bin\Debug\net10.0\BaayuLok.Domain.pdb
+Z:\baayuBackend\BaayuLok-Backend\src\BaayuLok.Application\obj\Debug\net10.0\BaayuLok.9FD6A80D.Up2Date

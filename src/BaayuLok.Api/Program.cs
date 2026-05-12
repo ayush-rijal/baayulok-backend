@@ -18,10 +18,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // 2. Register our custom Services (Dependency Injection)
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();    
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+
 
 // 3. Register MediatR (so it knows where to find our Handlers)
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly));
-builder.Services.AddScoped<IJwtProvider,JwtProvider>();
+
 
 var app = builder.Build();
 app.UseHttpsRedirection();

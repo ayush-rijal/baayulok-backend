@@ -120,6 +120,47 @@ namespace BaayuLok.Infrastructure.Migrations
                     b.ToTable("Patients");
                 });
 
+            modelBuilder.Entity("BaayuLok.Domain.Entities.PatientDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FileUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("OriginalFileName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("VerifiedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("VerifiedByUserId");
+
+                    b.ToTable("PatientDocuments");
+                });
+
             modelBuilder.Entity("BaayuLok.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
@@ -199,6 +240,24 @@ namespace BaayuLok.Infrastructure.Migrations
                     b.Navigation("CreatedByOfficer");
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("BaayuLok.Domain.Entities.PatientDocument", b =>
+                {
+                    b.HasOne("BaayuLok.Domain.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BaayuLok.Domain.Entities.User", "VerifiedByUser")
+                        .WithMany()
+                        .HasForeignKey("VerifiedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("VerifiedByUser");
                 });
 
             modelBuilder.Entity("BaayuLok.Domain.Entities.RefreshToken", b =>

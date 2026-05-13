@@ -4,6 +4,9 @@ using BaayuLok.Application.DTOs.Patients;
 using BaayuLok.Application.UseCases.Patients.CreatePatient;
 using BaayuLok.Application.UseCases.Patients.UpdatePatient;
 using BaayuLok.Application.UseCases.Patients.UpdatePatientStatus;
+using BaayuLok.Application.UseCases.PatientDocuments.GetPatientDocuments;
+using BaayuLok.Application.DTOs.PatientDocuments;
+using BaayuLok.Application.UseCases.PatientDocuments.CreatePatientDocument;
 
 
 using MediatR;
@@ -179,6 +182,43 @@ public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] UpdatePatientS
         return NotFound();
 
     return NoContent();
+}
+[HttpGet("{patientId:guid}/documents")]
+public async Task<IActionResult> GetDocuments(Guid patientId)
+{
+    var documents = await _mediator.Send(new GetPatientDocumentsQuery
+    {
+        PatientId = patientId
+    });
+
+    return Ok(documents);
+}
+[HttpPost("{patientId:guid}/documents")]
+public async Task<IActionResult> CreateDocument(Guid patientId, [FromBody] CreatePatientDocumentRequest request)
+{
+    if (string.IsNullOrWhiteSpace(request.Type))
+        return BadRequest("Document type is required.");
+
+    if (string.IsNullOrWhiteSpace(request.FileUrl))
+        return BadRequest("FileUrl is required.");
+
+    if (string.IsNullOrWhiteSpace(request.OriginalFileName))
+        return BadRequest("OriginalFileName is required.");
+
+    var command = new CreatePatientDocumentCommand
+    {
+        PatientId = patientId,
+        Type = request.Type,
+        FileUrl = request.FileUrl,
+        OriginalFileName = request.OriginalFileName
+    };
+
+    var documentId = await _mediator.Send(command);
+
+    return Ok(new
+    {
+        DocumentId = documentId
+    });
 }
 
 

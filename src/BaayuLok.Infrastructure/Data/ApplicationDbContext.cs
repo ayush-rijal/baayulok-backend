@@ -14,6 +14,8 @@ public class ApplicationDbContext : DbContext
     // Patient/case tables
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Department> Departments { get; set; }
+    public DbSet<PatientDocument> PatientDocuments { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,5 +55,20 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Patient>()
             .Property(p => p.CostRaised)
             .HasPrecision(18, 2);
+
+modelBuilder.Entity<PatientDocument>()
+    .HasOne(d => d.Patient)
+    .WithMany()
+    .HasForeignKey(d => d.PatientId)
+    .OnDelete(DeleteBehavior.Cascade);
+
+modelBuilder.Entity<PatientDocument>()
+    .HasOne(d => d.VerifiedByUser)
+    .WithMany()
+    .HasForeignKey(d => d.VerifiedByUserId)
+    .OnDelete(DeleteBehavior.Restrict);
+
+
+
     }
 }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BaayuLok.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+da454042daba68993d7c753c4980ee2934b4c984")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9a1d0e39f5273311a37afb7aaf9cb76cf37557d1")]
 [assembly: System.Reflection.AssemblyProductAttribute("BaayuLok.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BaayuLok.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

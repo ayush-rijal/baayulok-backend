@@ -15,6 +15,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Department> Departments { get; set; }
     public DbSet<PatientDocument> PatientDocuments { get; set; }
+    public DbSet<Donation> Donations { get; set; }
+
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -67,6 +69,22 @@ modelBuilder.Entity<PatientDocument>()
     .WithMany()
     .HasForeignKey(d => d.VerifiedByUserId)
     .OnDelete(DeleteBehavior.Restrict);
+
+modelBuilder.Entity<Donation>()
+    .HasOne(d => d.Patient)
+    .WithMany()
+    .HasForeignKey(d => d.PatientId)
+    .OnDelete(DeleteBehavior.Restrict);
+
+modelBuilder.Entity<Donation>()
+    .HasOne(d => d.DonorUser)
+    .WithMany()
+    .HasForeignKey(d => d.DonorUserId)
+    .OnDelete(DeleteBehavior.SetNull);
+
+modelBuilder.Entity<Donation>()
+    .Property(d => d.Amount)
+    .HasPrecision(18, 2);
 
 
 

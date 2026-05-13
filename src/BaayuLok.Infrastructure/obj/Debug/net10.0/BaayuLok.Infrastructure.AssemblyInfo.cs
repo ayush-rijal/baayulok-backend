@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BaayuLok.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9a1d0e39f5273311a37afb7aaf9cb76cf37557d1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aa3abda13852f4e422d5244cf69de9263015d84a")]
 [assembly: System.Reflection.AssemblyProductAttribute("BaayuLok.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BaayuLok.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

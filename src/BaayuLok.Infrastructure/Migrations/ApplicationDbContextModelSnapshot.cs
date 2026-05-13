@@ -44,6 +44,55 @@ namespace BaayuLok.Infrastructure.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("BaayuLok.Domain.Entities.Donation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("DonorUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("GatewayReference")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonorUserId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Donations");
+                });
+
             modelBuilder.Entity("BaayuLok.Domain.Entities.Patient", b =>
                 {
                     b.Property<Guid>("Id")
@@ -221,6 +270,24 @@ namespace BaayuLok.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BaayuLok.Domain.Entities.Donation", b =>
+                {
+                    b.HasOne("BaayuLok.Domain.Entities.User", "DonorUser")
+                        .WithMany()
+                        .HasForeignKey("DonorUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("BaayuLok.Domain.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DonorUser");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("BaayuLok.Domain.Entities.Patient", b =>

@@ -7,6 +7,10 @@ using BaayuLok.Application.UseCases.Patients.UpdatePatientStatus;
 using BaayuLok.Application.UseCases.PatientDocuments.GetPatientDocuments;
 using BaayuLok.Application.DTOs.PatientDocuments;
 using BaayuLok.Application.UseCases.PatientDocuments.CreatePatientDocument;
+using BaayuLok.Application.DTOs.Donations;
+using BaayuLok.Application.UseCases.Donations.CreateDonation;
+using BaayuLok.Application.UseCases.Donations.GetPatientDonations;
+
 
 
 using MediatR;
@@ -41,7 +45,7 @@ public async Task<IActionResult> GetById(Guid id)
     });
 
     if (patient == null)
-        return NotFound();
+        return NotFound(new { error = "Patient not found." });
 
     return Ok(patient);
 }
@@ -146,7 +150,7 @@ public async Task<IActionResult> Update(Guid id, [FromBody] UpdatePatientRequest
     var updated = await _mediator.Send(command);
 
     if (!updated)
-        return NotFound();
+        return NotFound(new { error = "Patient not found." });
 
     return NoContent();
 }
@@ -179,7 +183,7 @@ public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] UpdatePatientS
     var updated = await _mediator.Send(command);
 
     if (!updated)
-        return NotFound();
+        return NotFound(new { error = "Patient not found." });
 
     return NoContent();
 }
@@ -219,6 +223,42 @@ public async Task<IActionResult> CreateDocument(Guid patientId, [FromBody] Creat
     {
         DocumentId = documentId
     });
+}
+[HttpPost("{patientId:guid}/donations")]
+public async Task<IActionResult> CreateDonation(Guid patientId, [FromBody] CreateDonationRequest request)
+{
+    if (request.Amount <= 0)
+        return BadRequest("Amount must be greater than 0.");
+
+    if (string.IsNullOrWhiteSpace(request.PaymentMethod))
+        return BadRequest("PaymentMethod is required.");
+
+    var command = new CreateDonationCommand
+    {
+        PatientId = patientId,
+        DonorUserId = request.DonorUserId,
+        Amount = request.Amount,
+        PaymentMethod = request.PaymentMethod,
+        GatewayReference = request.GatewayReference,
+        Message = request.Message
+    };
+
+    var donationId = await _mediator.Send(command);
+
+    return Ok(new
+    {
+        DonationId = donationId
+    });
+}
+[HttpGet("{patientId:guid}/donations")]
+public async Task<IActionResult> GetDonations(Guid patientId)
+{
+    var donations = await _mediator.Send(new GetPatientDonationsQuery
+    {
+        PatientId = patientId
+    });
+
+    return Ok(donations);
 }
 
 

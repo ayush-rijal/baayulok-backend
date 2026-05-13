@@ -4,6 +4,7 @@ using BaayuLok.Infrastructure.Data;
 using BaayuLok.Infrastructure.Repositories;
 using BaayuLok.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using BaayuLok.Api.Middleware;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,8 @@ builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IPatientDocumentRepository, PatientDocumentRepository>();
+builder.Services.AddScoped<IDonationRepository, DonationRepository>();
+
 
 
 
@@ -43,6 +46,8 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Regis
 
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");

@@ -31,7 +31,7 @@ public class PatientDocumentsController : ControllerBase
         var verified = await _mediator.Send(command);
 
         if (!verified)
-            return NotFound();
+            return NotFound(new { error = "Patient document not found." });
 
         return NoContent();
     }

@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BaayuLok.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260512071017_AddPatients")]
-    partial class AddPatients
+    [Migration("20260513150622_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.7")
+                .HasAnnotation("ProductVersion", "10.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -45,26 +45,55 @@ namespace BaayuLok.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Departments");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            Icon = "Heart",
-                            Name = "Cardiology"
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            Icon = "Brain",
-                            Name = "Neurology"
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            Icon = "Ribbon",
-                            Name = "Oncology"
-                        });
+            modelBuilder.Entity("BaayuLok.Domain.Entities.Donation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("DonorUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("GatewayReference")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonorUserId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Donations");
                 });
 
             modelBuilder.Entity("BaayuLok.Domain.Entities.Patient", b =>
@@ -80,10 +109,12 @@ namespace BaayuLok.Infrastructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<decimal>("CostRaised")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<decimal>("CostTotal")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -139,6 +170,47 @@ namespace BaayuLok.Infrastructure.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Patients");
+                });
+
+            modelBuilder.Entity("BaayuLok.Domain.Entities.PatientDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FileUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("OriginalFileName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("VerifiedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("VerifiedByUserId");
+
+                    b.ToTable("PatientDocuments");
                 });
 
             modelBuilder.Entity("BaayuLok.Domain.Entities.RefreshToken", b =>
@@ -203,23 +275,59 @@ namespace BaayuLok.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("BaayuLok.Domain.Entities.Donation", b =>
+                {
+                    b.HasOne("BaayuLok.Domain.Entities.User", "DonorUser")
+                        .WithMany()
+                        .HasForeignKey("DonorUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("BaayuLok.Domain.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DonorUser");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("BaayuLok.Domain.Entities.Patient", b =>
                 {
                     b.HasOne("BaayuLok.Domain.Entities.User", "CreatedByOfficer")
                         .WithMany()
                         .HasForeignKey("CreatedByOfficerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BaayuLok.Domain.Entities.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CreatedByOfficer");
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("BaayuLok.Domain.Entities.PatientDocument", b =>
+                {
+                    b.HasOne("BaayuLok.Domain.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BaayuLok.Domain.Entities.User", "VerifiedByUser")
+                        .WithMany()
+                        .HasForeignKey("VerifiedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("VerifiedByUser");
                 });
 
             modelBuilder.Entity("BaayuLok.Domain.Entities.RefreshToken", b =>

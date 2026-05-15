@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BaayuLok.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7a29bcb739f97758a55ff50daa8776d4f98af4ba")]
 [assembly: System.Reflection.AssemblyProductAttribute("BaayuLok.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BaayuLok.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
